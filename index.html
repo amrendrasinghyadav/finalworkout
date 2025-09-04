@@ -3,6 +3,8 @@
     <head>
         <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
         <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
     </head>
 
     <body style="margin: 0; overflow: hidden;">
@@ -11,18 +13,19 @@
             renderer="logarithmicDepthBuffer: true;"
             arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
             embedded
+            gesture-detector
         >
             <a-assets>
-                <video id="arm-vid" src="assets/arm-workout.mp4" loop="true" playsinline webkit-playsinline></video>
-                <video id="chest-vid" src="assets/chest-workout.mp4" loop="true" playsinline webkit-playsinline></video>
+                <video id="arm-vid" src="assets/arm-workout.mp4" loop autoplay muted playsinline webkit-playsinline></video>
+                <video id="chest-vid" src="assets/chest-workout.mp4" loop autoplay muted playsinline webkit-playsinline></video>
             </a-assets>
 
-            <a-marker id="arm-marker" type="pattern" url="assets/pattern-Upper Arm.patt">
-                <a-video src="#arm-vid" width="1.6" height="0.9" rotation="-90 0 0"></a-video>
+            <a-marker id="arm-marker" type="pattern" url="assets/pattern-Upper Arm.patt" smooth="true">
+                <a-video src="#arm-vid" width="1.6" height="0.9" rotation="-90 0 0" gesture-handler></a-video>
             </a-marker>
 
-            <a-marker id="chest-marker" type="pattern" url="assets/pattern-Chest.patt">
-                <a-video src="#chest-vid" width="1.6" height="0.9" rotation="-90 0 0"></a-video>
+            <a-marker id="chest-marker" type="pattern" url="assets/pattern-Chest.patt" smooth="true">
+                <a-video src="#chest-vid" width="1.6" height="0.9" rotation="-90 0 0" gesture-handler></a-video>
             </a-marker>
 
             <a-entity camera></a-entity>
@@ -30,13 +33,11 @@
 
         <script>
             window.addEventListener('load', () => {
-                // Code for the Arm Marker
                 const armMarker = document.querySelector("#arm-marker");
                 const armVideo = document.querySelector("#arm-vid");
                 armMarker.addEventListener('markerFound', () => armVideo.play());
                 armMarker.addEventListener('markerLost', () => armVideo.pause());
 
-                // Code for the Chest Marker
                 const chestMarker = document.querySelector("#chest-marker");
                 const chestVideo = document.querySelector("#chest-vid");
                 chestMarker.addEventListener('markerFound', () => chestVideo.play());
